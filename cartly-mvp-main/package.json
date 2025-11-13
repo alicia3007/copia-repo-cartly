@@ -1,0 +1,30 @@
+{
+  "name": "cartly-mvp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+  "test": "echo \"Error: no test specified\" && exit 1",
+  "dev": "nodemon src/server.js",
+  "start": "node src/server.js",
+  "start:wajs": "node WaJS/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "airtable": "^0.12.2",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "openai": "^4.104.0",
+    "puppeteer": "^24.24.0",
+    "qrcode-terminal": "^0.12.0",
+    "twilio": "^5.10.2",
+    "whatsapp-web.js": "^1.34.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
