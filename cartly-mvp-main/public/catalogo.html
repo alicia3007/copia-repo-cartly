@@ -37,7 +37,7 @@
     width:36px;height:36px;border-radius:10px;
     display:grid;place-items:center;
     background:linear-gradient(135deg, var(--brand), #60a5fa);
-    color:white;font-weight:700;
+    color:#05232b;font-weight:700;
     box-shadow:0 6px 16px rgba(14,165,233,0.35);
   }
   h1{margin:0;font-size:22px;letter-spacing:.2px}
@@ -69,9 +69,9 @@
   .placeholder{height:190px;display:grid;place-items:center;color:#94a3b8;font-size:28px}
   .chip.price{
     position:absolute;left:12px;bottom:12px;
-    background:#0ea5e9; color:white; font-weight:700;
+    background:#0369a1; color:white; font-weight:700;
     padding:6px 10px; border-radius:999px; font-size:14px;
-    box-shadow:0 6px 14px rgba(14,165,233,0.35);
+    box-shadow:0 6px 14px rgba(3,105,161,0.35);
   }
 
   .body{padding:12px 14px 16px;display:flex;flex-direction:column;gap:10px}
@@ -102,6 +102,9 @@
       <div class="top">
         <div class="logo">C</div>
         <h1>Cartly • Catálogo</h1>
+        <div id="catalog-search" aria-hidden="false">
+          <input id="catalog-search-input" type="search" placeholder="Buscar..." aria-label="Buscar en el catálogo">
+        </div>
       </div>
       <p class="sub">miércoles, 15 de octubre • 21 productos</p>
     </div>
@@ -381,8 +384,8 @@
       </div>
 
       <div class="body">
-        <h3 class="title"></h3>
-        <p class="desc"></p>
+        <h3 class="title" aria-label="Información no disponible">Información no disponible</h3>
+        <p class="desc">No hay descripción disponible.</p>
 
         <div class="seller">
           <div class="avatar">V</div>
@@ -575,5 +578,40 @@
   </main>
 
   <footer>Cartly — ventas entre estudiantes. Hecho con cariño 💙</footer>
+  <!-- Script de búsqueda agregado: filtra las tarjetas por título/descripcion y actualiza el conteo -->
+  <script>
+    (function(){
+      var input = document.getElementById('catalog-search-input');
+      if(!input) return;
+      var grid = document.querySelector('main .grid');
+      if(!grid) return;
+      var cards = Array.from(grid.querySelectorAll('article.card'));
+      var sub = document.querySelector('header .sub');
+      var originalDate = sub ? (sub.textContent.split('•')[0] || sub.textContent) : '';
+
+      function updateCount(){
+        if(!sub) return;
+        var visible = cards.filter(function(c){ return c.style.display !== 'none'; }).length;
+        sub.textContent = originalDate.trim() + ' • ' + visible + ' productos';
+      }
+
+      function normalize(s){ return (s||'').toString().toLowerCase(); }
+
+      function filter(){
+        var q = normalize(input.value).trim();
+        for (const card of cards) {
+          var title = normalize(card.querySelector('.title') && card.querySelector('.title').textContent);
+          var desc = normalize(card.querySelector('.desc') && card.querySelector('.desc').textContent);
+          var match = !q || title.includes(q) || desc.includes(q);
+          card.style.display = match ? '' : 'none';
+        }
+        updateCount();
+      }
+
+      input.addEventListener('input', filter);
+      // initialize count
+      updateCount();
+    })();
+  </script>
 </body>
 </html>
